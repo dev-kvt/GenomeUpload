@@ -14,6 +14,10 @@ const STATUS = {
   SUCCESS: 'success'
 };
 
+const api = axios.create({
+  baseURL: 'https://hack4impact.onrender.com'
+});
+
 const GenomeUpload = () => {
   const [status, setStatus] = useState(STATUS.IDLE);
   const [results, setResults] = useState([]);
@@ -61,7 +65,7 @@ const GenomeUpload = () => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('/api/upload-genome', formData, {
+      const response = await api.post('/api/upload-genome', formData, {
         // Let axios/browser set the correct multipart boundary for FormData.
         headers: formData.getHeaders ? formData.getHeaders() : undefined,
         onUploadProgress: (event) => {
