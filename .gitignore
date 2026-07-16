@@ -10,6 +10,7 @@ pnpm-debug.log*
 
 # Environment
 .env
+.env.local
 .env.*.local
 
 # Builds

@@ -1,4 +1,6 @@
+import Navbar from './Navbar.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useAuth, SignUpButton } from '@clerk/react';
 import {
   Dna,
   ShieldCheck,
@@ -49,24 +51,11 @@ const steps = [
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { isSignedIn } = useAuth();
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-mist-200 bg-white/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2 text-ink-700">
-            <Dna className="h-6 w-6 text-tealish-500" />
-            <span className="text-lg font-bold tracking-tight">GenomeScan</span>
-          </div>
-          <button
-            onClick={() => navigate('/analyze')}
-            className="rounded-full bg-tealish-500 px-5 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-tealish-600 hover:shadow-lg active:scale-95"
-          >
-            Launch Scanner
-          </button>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero */}
       <section className="relative overflow-hidden">
@@ -97,16 +86,27 @@ const Landing = () => {
           </p>
 
           <div className="flex flex-col items-center gap-4 sm:flex-row">
-            <button
-              onClick={() => navigate('/analyze')}
-              className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-tealish-500 to-tealish-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg transition hover:shadow-xl active:scale-95"
-            >
-              Start Analysis
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </button>
+            {isSignedIn ? (
+              <button
+                onClick={() => navigate('/analyze')}
+                className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-tealish-500 to-tealish-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg transition hover:shadow-xl active:scale-95"
+              >
+                Start Analysis
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            ) : (
+              <SignUpButton mode="modal" forceRedirectUrl="/analyze">
+                <button
+                  className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-tealish-500 to-tealish-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg transition hover:shadow-xl active:scale-95"
+                >
+                  Start Analysis
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </button>
+              </SignUpButton>
+            )}
             <div className="flex items-center gap-2 text-sm text-ink-600">
               <ShieldCheck className="h-4 w-4 text-emerald-500" />
-              No sign-up required · 100% free
+              Secure sign-up · 100% free
             </div>
           </div>
         </div>
@@ -154,13 +154,24 @@ const Landing = () => {
             ))}
           </div>
           <div className="mt-12 flex justify-center">
-            <button
-              onClick={() => navigate('/analyze')}
-              className="group flex items-center gap-2 rounded-full bg-ink-700 px-8 py-3.5 text-base font-semibold text-white shadow-lg transition hover:bg-ink-600 active:scale-95"
-            >
-              Try it now — it's free
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </button>
+            {isSignedIn ? (
+              <button
+                onClick={() => navigate('/analyze')}
+                className="group flex items-center gap-2 rounded-full bg-ink-700 px-8 py-3.5 text-base font-semibold text-white shadow-lg transition hover:bg-ink-600 active:scale-95"
+              >
+                Try it now — it's free
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            ) : (
+              <SignUpButton mode="modal" forceRedirectUrl="/analyze">
+                <button
+                  className="group flex items-center gap-2 rounded-full bg-ink-700 px-8 py-3.5 text-base font-semibold text-white shadow-lg transition hover:bg-ink-600 active:scale-95"
+                >
+                  Try it now — it's free
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </button>
+              </SignUpButton>
+            )}
           </div>
         </div>
       </section>
